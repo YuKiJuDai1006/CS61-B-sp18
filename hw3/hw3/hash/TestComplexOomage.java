@@ -24,7 +24,6 @@ public class TestComplexOomage {
     public void testRandomOomagesHashCodeSpread() {
         List<Oomage> oomages = new ArrayList<>();
         int N = 10000;
-
         for (int i = 0; i < N; i += 1) {
             oomages.add(ComplexOomage.randomComplexOomage());
         }
