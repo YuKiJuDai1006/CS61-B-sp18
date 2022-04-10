@@ -3,7 +3,6 @@ package hw3.hash;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -26,15 +25,15 @@ public class TestSimpleOomage {
         SimpleOomage ooA2 = new SimpleOomage(5, 5, 25);
         SimpleOomage ooA3 = new SimpleOomage(5, 10, 20);
         SimpleOomage ooB = new SimpleOomage(50, 50, 50);
-        int OoA = ooA.hashCode();
-        int OoA2 = ooA2.hashCode();
-        int OoA3 = ooA3.hashCode();
-        int OoB = ooB.hashCode();
-        assertEquals(OoA, OoA3);
-        assertNotEquals(OoA, OoA2);
-        assertNotEquals(OoA, OoB);
-        assertNotEquals(OoA2, OoB);
-        assertNotEquals(OoA, "ketchup");
+        int oOoA = ooA.hashCode();
+        int oOoA2 = ooA2.hashCode();
+        int oOoA3 = ooA3.hashCode();
+        int oOoB = ooB.hashCode();
+        assertEquals(oOoA, oOoA3);
+        assertNotEquals(oOoA, oOoA2);
+        assertNotEquals(oOoA, oOoB);
+        assertNotEquals(oOoA2, oOoB);
+        assertNotEquals(oOoA, "ketchup");
     }
 
     @Test
