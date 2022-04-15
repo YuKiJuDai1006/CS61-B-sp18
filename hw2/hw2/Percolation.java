@@ -70,6 +70,9 @@ public class Percolation {
         if (row > N - 1 || col > N - 1 || row < 0 || col < 0) {
             throw new IndexOutOfBoundsException("Sth Out Of Bounds");
         }
+        if (!isOpen(row, col)) {
+            return false;
+        }
         int index = row * N + col;
         for (int i = 0; i < N; i++) {
             if (WQU.connected(i, index)) {
@@ -93,6 +96,9 @@ public class Percolation {
     }             // does the system percolate?
 
     public static void main(String[] args) {
+        Percolation p = new Percolation(10);
+        p.open(0,1);
+        boolean pp = p.isFull(0, 1);
 
     }   // use for unit testing (not required)
 
