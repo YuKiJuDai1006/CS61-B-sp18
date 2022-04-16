@@ -3,10 +3,10 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    int N;
-    int size = 0;
-    int[] universe;
-    WeightedQuickUnionUF WQU;
+    private int N;
+    private int size = 0;
+    private int[] universe;
+    private WeightedQuickUnionUF WQU;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -17,22 +17,19 @@ public class Percolation {
         WQU = new WeightedQuickUnionUF(N * N);
     }               // create N-by-N grid, with all sites initially blocked
 
-    private int xyTo1D(int r, int c) {
-        return r * N + c;
-    }
 
     public void open(int row, int col) {
         if (row > N - 1 || col > N - 1 || row < 0 || col < 0) {
             throw new IndexOutOfBoundsException("Sth Out Of Bounds");
         }
-        int index = xyTo1D(row, col);
+        int index = row * N + col;
         if (!isOpen(row, col)) {
             universe[index] = 1;
             size++;
-            unionSite(index, index - N);
-            unionSite(index, index - 1);
-            unionSite(index, index + 1);
-            unionSite(index, index + N);
+            tryUnionSite(index, index - N);
+            tryUnionSite(index, index - 1);
+            tryUnionSite(index, index + 1);
+            tryUnionSite(index, index + N);
         }
     }    // open the site (row, col) if it is not open already
 
@@ -52,7 +49,7 @@ public class Percolation {
         return true;
     }
 
-    public void unionSite(int n1, int n2) {
+    public void tryUnionSite(int n1, int n2) {
         if (isValued(n1, n2)) {
             WQU.union(n1, n2);
         }
@@ -75,6 +72,9 @@ public class Percolation {
         }
         int index = row * N + col;
         for (int i = 0; i < N; i++) {
+            if (!isOpen(0, i)) {
+                continue;
+            }
             if (WQU.connected(i, index)) {
                 return true;
             }
@@ -95,9 +95,13 @@ public class Percolation {
         return false;
     }             // does the system percolate?
 
+    public int size() {
+        return size;
+    }
+
     public static void main(String[] args) {
         Percolation p = new Percolation(10);
-        p.open(0,1);
+        p.open(0, 1);
         boolean pp = p.isFull(0, 1);
 
     }   // use for unit testing (not required)

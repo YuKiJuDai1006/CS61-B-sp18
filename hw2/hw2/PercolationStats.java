@@ -6,10 +6,10 @@ import edu.princeton.cs.introcs.StdStats;
 import static java.lang.Math.sqrt;
 
 public class PercolationStats {
-    Percolation percolation;
-    int N;
-    int T;
-    double[] res;
+    private Percolation percolation;
+    private int N;
+    private int T;
+    private double[] res;
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("Sth Minus");
@@ -17,17 +17,17 @@ public class PercolationStats {
         this.N = N;
         this.T = T;
         res = new double[T];
-        run(pf);
+        run(pf, N, T);
     }   // perform T independent experiments on an N-by-N grid
 
-    private void run(PercolationFactory pf) {
+    private void run(PercolationFactory pf, int N, int T) {
         for (int i = 0; i < T; i++) {
             Percolation p = pf.make(N);
             while (!p.percolates()) {
                 int index = StdRandom.uniform(N * N);
                 p.open(index / N, index % N);
             }
-            res[i] = (double) p.size / (N * N);
+            res[i] = (double) p.size() / (N * N);
         }
 
     }
