@@ -7,27 +7,27 @@ import static java.lang.Math.sqrt;
 
 public class PercolationStats {
     private Percolation percolation;
-    private int N;
-    private int T;
     private double[] res;
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("Sth Minus");
         }
-        this.N = N;
-        this.T = T;
         res = new double[T];
         run(pf, N, T);
     }   // perform T independent experiments on an N-by-N grid
 
     private void run(PercolationFactory pf, int N, int T) {
         for (int i = 0; i < T; i++) {
+            int size = 0;
             Percolation p = pf.make(N);
             while (!p.percolates()) {
                 int index = StdRandom.uniform(N * N);
-                p.open(index / N, index % N);
+                if (!p.isOpen(index / N, index % N)) {
+                    p.open(index / N, index % N);
+                    size++;
+                }
             }
-            res[i] = (double) p.size() / (N * N);
+            res[i] = (double) size / (N * N);
         }
 
     }
@@ -41,13 +41,13 @@ public class PercolationStats {
     public double confidenceLow() {
         double imean = mean();
         double istddev = stddev();
-        double confidenceLow = imean - 1.96 * istddev / sqrt(T);
+        double confidenceLow = imean - 1.96 * istddev / sqrt(res.length);
         return confidenceLow;
     }                                 // low endpoint of 95% confidence interval
     public double confidenceHigh() {
         double imean = mean();
         double istddev = stddev();
-        double confidenceHigh = imean + 1.96 * istddev / sqrt(T);
+        double confidenceHigh = imean + 1.96 * istddev / sqrt(res.length);
         return confidenceHigh;
     }                                // high endpoint of 95% confidence interval
 }

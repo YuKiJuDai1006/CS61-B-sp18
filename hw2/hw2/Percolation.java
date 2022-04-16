@@ -33,7 +33,7 @@ public class Percolation {
         }
     }    // open the site (row, col) if it is not open already
 
-    public boolean isValued(int n1, int n2) {
+    private boolean isValued(int n1, int n2) {
         if (n2 < 0 || n2 > N * N - 1) {
             return false;
         }
@@ -49,7 +49,7 @@ public class Percolation {
         return true;
     }
 
-    public void tryUnionSite(int n1, int n2) {
+    private void tryUnionSite(int n1, int n2) {
         if (isValued(n1, n2)) {
             WQU.union(n1, n2);
         }
@@ -94,10 +94,6 @@ public class Percolation {
         }
         return false;
     }             // does the system percolate?
-
-    public int size() {
-        return size;
-    }
 
     public static void main(String[] args) {
         Percolation p = new Percolation(10);
