@@ -18,16 +18,14 @@ public class PercolationStats {
 
     private void run(PercolationFactory pf, int N, int T) {
         for (int i = 0; i < T; i++) {
-            int size = 0;
             Percolation p = pf.make(N);
             while (!p.percolates()) {
                 int index = StdRandom.uniform(N * N);
                 if (!p.isOpen(index / N, index % N)) {
                     p.open(index / N, index % N);
-                    size++;
                 }
             }
-            res[i] = (double) size / (N * N);
+            res[i] = (double) p.numberOfOpenSites() / (N * N);
         }
 
     }

@@ -71,6 +71,10 @@ public class Percolation {
             return false;
         }
         int index = row * N + col;
+        return isFullIndex(index);
+    }  // is the site (row, col) full?
+
+    private boolean isFullIndex(int index) {
         for (int i = 0; i < N; i++) {
             if (!isOpen(0, i)) {
                 continue;
@@ -80,19 +84,31 @@ public class Percolation {
             }
         }
         return false;
-    }  // is the site (row, col) full?
+    }
+
+    private boolean isUnionRow(int row1, int row2) {
+        for (int i = 0; i < N; i++) {
+            if (!isOpen(row1, i)) {
+                continue;
+            }
+            for (int j = 0; j < N; j++) {
+                if (!isOpen(row2, j)) {
+                    continue;
+                }
+                if (WQU.connected(row1 * N + i, row2 * N + j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public int numberOfOpenSites() {
         return size;
     }          // number of open sites
 
     public boolean percolates() {
-        for (int i = 0; i < N; i++) {
-            if (isFull(N - 1, i)) {
-                return true;
-            }
-        }
-        return false;
+        return isUnionRow(0, N - 1);
     }             // does the system percolate?
 
     public static void main(String[] args) {
