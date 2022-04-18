@@ -3,6 +3,10 @@ import java.util.TreeMap;
 import java.io.IOException;
 import java.util.Scanner;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.FileNotFoundException;
+
 import edu.princeton.cs.algs4.Stopwatch;
 
 /**
@@ -17,6 +21,19 @@ public class InsertInOrderSpeedTest {
      * Requests user input and performs tests of three different set
      * implementations. ARGS is unused.
      */
+    static PrintStream ps;
+
+    static {
+        try {
+            ps = new PrintStream("F:\\cs61-b\\CS61-B-sp19\\CS61-B-sp19\\lab7\\speedTestResults.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public InsertInOrderSpeedTest() throws FileNotFoundException {
+    }
+
     public static void main(String[] args) throws IOException {
         Scanner input = new Scanner(System.in);
 
@@ -84,6 +101,7 @@ public class InsertInOrderSpeedTest {
      * Prints a nice message about the error
      */
     public static void timeInOrderMap61B(Map61B<String, Integer> map, int N) {
+        System.setOut(ps);
         try {
             double mapTime = insertInOrder(map, N);
             System.out.printf(map.getClass() + ": %.2f sec\n", mapTime);
@@ -100,6 +118,7 @@ public class InsertInOrderSpeedTest {
      * Prints a nice message about the error
      */
     public static void timeInOrderTreeMap(TreeMap<String, Integer> treeMap, int N) {
+        System.setOut(ps);
         try {
             double javaTime = insertInOrder(treeMap, N);
             System.out.printf("Java's Built-in TreeMap: %.2f sec\n", javaTime);
@@ -116,6 +135,7 @@ public class InsertInOrderSpeedTest {
      * Prints a nice message about the error
      */
     public static void timeInOrderHashMap(HashMap<String, Integer> hashMap, int N) {
+        System.setOut(ps);
         try {
             double javaTime = insertInOrder(hashMap, N);
             System.out.printf("Java's Built-in HashMap: %.2f sec\n", javaTime);
