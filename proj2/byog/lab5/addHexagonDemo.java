@@ -3,11 +3,13 @@ package byog.lab5;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import org.junit.Test;
+
 import java.util.Random;
 
 public class addHexagonDemo {
-    private static final int WIDTH = 60;
-    private static final int HEIGHT = 30;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 70;
     private static final long SEED = 287312;
     private static final Random RANDOM = new Random(SEED);
 
@@ -99,11 +101,40 @@ public class addHexagonDemo {
          }
      }
 
+     public static void drawRandomVerticalHexes(int columnTh, Position startP, TETile[][] world, int s) {
+        Position start = bottomLeftNeighbor(startP, columnTh, s);
+        int num = columnTh < s ? s + columnTh : 3 * s - columnTh - 2;
+        for (int i = 0; i < num; i ++) {
+            TETile t = randomTile();
+            Position p = new Position(start.x, start.y + 2 * s * i);
+            addHexagon(world, p, s, t);
+        }
+     }
+
+     private static Position bottomLeftNeighbor(Position startP, int columnTh, int s) {
+        int xPos = startP.x + (2 * s - 1) * columnTh;
+        int yPos = startP.y + (columnTh < s ? -columnTh * s : (columnTh - 2 * s + 2) * s);
+        Position res= new Position(xPos, yPos);
+        return res;
+     }
+
+    private static TETile randomTile() {
+        int tileNum = RANDOM.nextInt(4);
+        switch (tileNum) {
+            case 0: return Tileset.WALL;
+            case 1: return Tileset.FLOWER;
+            case 2: return Tileset.SAND;
+            case 3: return Tileset.GRASS;
+            default: return Tileset.NOTHING;
+        }
+    }
+
+
      public static void main(String[] args) {
          TERenderer ter = new TERenderer();
          ter.initialize(WIDTH, HEIGHT);
-
-         Position p = new Position(4, 4);
+         int s = 4;
+         Position startP = new Position(15, 15);
          TETile t = Tileset.FLOWER;
 
          TETile[][] world = new TETile[WIDTH][HEIGHT];
@@ -113,7 +144,13 @@ public class addHexagonDemo {
              }
          }
 
-         addHexagon(world, p, 3, t);
+         drawRandomVerticalHexes(0, startP, world, s);
+         drawRandomVerticalHexes(1, startP, world, s);
+         drawRandomVerticalHexes(2, startP, world, s);
+         drawRandomVerticalHexes(3, startP, world, s);
+         drawRandomVerticalHexes(4, startP, world, s);
+         drawRandomVerticalHexes(5, startP, world, s);
+         drawRandomVerticalHexes(6, startP, world, s);
 
          ter.renderFrame(world);
      }
