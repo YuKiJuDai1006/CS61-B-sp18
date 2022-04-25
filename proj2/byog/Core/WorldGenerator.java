@@ -7,17 +7,17 @@ import byog.TileEngine.Tileset;
 import java.util.Random;
 
 public class WorldGenerator {
-    private static final int WIDTH= 50;
-    private static final int HEIGHT = 30;
-    private static final long SEED = 2001;
+    private static final int WIDTH= 100;
+    private static final int HEIGHT = 50;
+    private static final long SEED = 3000;
     private static final Random RANDOM = new Random(SEED);
 
     private static class Position {
         int x;
         int y;
-        public Position(int xpos, int ypos) {
-            x = xpos;
-            y = ypos;
+        public Position(int xPos, int yPos) {
+            x = xPos;
+            y = yPos;
         }
     }
 
@@ -92,7 +92,7 @@ public class WorldGenerator {
             int yCoord = RandomUtils.uniform(RANDOM, 0, 30);
             Position p = new Position(xCoord, yCoord);
             int width = RandomUtils.uniform(RANDOM, 3, 5);
-            int height = RandomUtils.uniform(RANDOM, 3, 5);
+            int height = RandomUtils.uniform(RANDOM, 3, 7);
             RoomGenerate(world, width, height, p);
         }
     }
@@ -122,7 +122,7 @@ public class WorldGenerator {
         TETile[][] world = new TETile[WIDTH][HEIGHT];
         DefaultWorld(world);
 
-        AllRoomGenerate(world);
+        //AllRoomGenerate(world);
         AllHallwayGenerate(world);
 
         ter.renderFrame(world);

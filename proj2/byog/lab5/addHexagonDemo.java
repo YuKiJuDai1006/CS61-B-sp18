@@ -1,5 +1,7 @@
 package byog.lab5;
 
+import byog.Core.Position;
+import byog.Core.Room;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
@@ -144,13 +146,18 @@ public class addHexagonDemo {
              }
          }
 
-         drawRandomVerticalHexes(0, startP, world, s);
+         /*drawRandomVerticalHexes(0, startP, world, s);
          drawRandomVerticalHexes(1, startP, world, s);
          drawRandomVerticalHexes(2, startP, world, s);
          drawRandomVerticalHexes(3, startP, world, s);
          drawRandomVerticalHexes(4, startP, world, s);
          drawRandomVerticalHexes(5, startP, world, s);
-         drawRandomVerticalHexes(6, startP, world, s);
+         drawRandomVerticalHexes(6, startP, world, s);*/
+
+         byog.Core.Position p1 = new byog.Core.Position(10, 10);
+         byog.Core.Position p2 = new byog.Core.Position(40, 40);
+         Room wxy = new Room(p1, p2);
+         wxy.drawRoom(world, t);
 
          ter.renderFrame(world);
      }
