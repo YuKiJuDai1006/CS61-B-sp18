@@ -26,6 +26,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.clear();
     }
 
+    public MyHashMap(int initialSize) {
+        buckets = new ArrayMap[initialSize];
+        this.clear();
+    }
+
     /* Removes all of the mappings from this map. */
     @Override
     public void clear() {
@@ -63,12 +68,28 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             size++;
         }
         if (loadFactor() > MAX_LF) {
-            buckets = putHelper(2 * buckets.length);
+            resize(2 * buckets.length);
         }
         buckets[hash(key)].put(key, value);
     }
 
-    private ArrayMap<K, V>[] putHelper(int capacity) {
+    private void resize(int capacity) {
+        MyHashMap<K, V> temp = new MyHashMap<>(capacity);
+        for (int i = 0; i < temp.buckets.length; i += 1) {
+            temp.buckets[i] = new ArrayMap<>();
+        }
+        for (int i = 0; i < buckets.length; i++) {
+            Set<K> set = buckets[i].keySet();
+            for (K key : set) {
+                V value = buckets[i].get(key);
+                temp.put(key, value);
+            }
+        }
+        this.buckets = temp.buckets;
+        this.size = temp.size;
+    }
+
+    /* private ArrayMap<K, V>[] putHelper(int capacity) {
         ArrayMap<K, V>[] newBuckets = new ArrayMap[capacity];
         for (int i = 0; i < newBuckets.length; i += 1) {
             newBuckets[i] = new ArrayMap<>();
@@ -92,7 +113,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
         int numBuckets = newBuckets.length;
         return Math.floorMod(key.hashCode(), numBuckets);
-    }
+    } */
 
     /* Returns the number of key-value mappings in this map. */
     @Override
