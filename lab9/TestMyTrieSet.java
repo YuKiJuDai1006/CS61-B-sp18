@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Jenny Huang on 3/12/19.
  */
-public class TestMyTrieSet {
+/* public class TestMyTrieSet {
 
     // assumes add/contains work
     @Test
@@ -60,4 +60,4 @@ public class TestMyTrieSet {
 
 
 
-}
+} */
