@@ -86,7 +86,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             }
         }
         this.buckets = temp.buckets;
-        this.size = temp.size;
     }
 
     /* private ArrayMap<K, V>[] putHelper(int capacity) {
