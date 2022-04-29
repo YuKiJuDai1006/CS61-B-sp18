@@ -27,24 +27,21 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Returns the index of the node to the left of the node at i.
      */
     private static int leftIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2 * i;
     }
 
     /**
      * Returns the index of the node to the right of the node at i.
      */
     private static int rightIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2 * i + 1;
     }
 
     /**
      * Returns the index of the node that is the parent of the node at i.
      */
     private static int parentIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return i / 2;
     }
 
     /**
@@ -104,22 +101,42 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Bubbles up the node currently at the given index.
      */
     private void swim(int index) {
+        if (!inBounds(index)) {
+            return;
+        }
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        if (parentIndex(index) != 0 && min(index, parentIndex(index)) == index) {
+            swap(index, parentIndex(index));
+            swim(parentIndex(index));
+        }
     }
 
     /**
      * Bubbles down the node currently at the given index.
      */
     private void sink(int index) {
+        if (!inBounds(index)) {
+            return;
+        }
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-
-        /** TODO: Your code here. */
-        return;
+        boolean isSmallerLeft = min(index, leftIndex(index)) == index;
+        boolean isSmallerRight = min(index, rightIndex(index)) == index;
+        if (!isSmallerLeft || !isSmallerRight) {
+            if (!isSmallerLeft && !isSmallerRight) {
+                int swapIndex = min(leftIndex(index), rightIndex(index));
+                swap(index, swapIndex);
+                sink(swapIndex);
+            } else if (!isSmallerLeft) {
+                swap(index, leftIndex(index));
+                sink(leftIndex(index));
+            } else {
+                swap(index, rightIndex(index));
+                sink(rightIndex(index));
+            }
+        }
     }
 
     /**
@@ -132,8 +149,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (size + 1 == contents.length) {
             resize(contents.length * 2);
         }
-
-        /* TODO: Your code here! */
+        int index = size + 1;
+        contents[index] = new Node(item, priority);
+        size++;
+        swim(index);
     }
 
     /**
@@ -142,8 +161,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
-        /* TODO: Your code here! */
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        return contents[1].myItem;
     }
 
     /**
@@ -157,8 +178,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
-        /* TODO: Your code here! */
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        swap(1, size);
+        T toReturn = contents[size].myItem;
+        contents[size] = null;
+        size--;
+        sink(1);
+        return toReturn;
     }
 
     /**
@@ -180,8 +208,14 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        /* TODO: Your code here! */
-        return;
+        if (size == 0) {
+            return;
+        }
+        for (int i = 1; i <= size; i++) {
+            if (contents[i].item().equals(item)) {
+                contents[i].myPriority = priority;
+            }
+        }
     }
 
     /**
@@ -222,7 +256,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             throw new IllegalArgumentException("Cannot sink or swim nodes with index 0 or less");
         }
         if (index > size) {
-            throw new IllegalArgumentException("Cannot sink or swim nodes with index greater than current size.");
+            throw new IllegalArgumentException(
+                    "Cannot sink or swim nodes with index greater than current size.");
         }
         if (contents[index] == null) {
             throw new IllegalArgumentException("Cannot sink or swim a null node.");
@@ -238,7 +273,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             myPriority = priority;
         }
 
-        public T item(){
+        public T item() {
             return myItem;
         }
 
