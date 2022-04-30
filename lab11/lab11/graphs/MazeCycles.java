@@ -19,27 +19,32 @@ public class MazeCycles extends MazeExplorer {
 
     @Override
     public void solve() {
-        // TODO: Your code here!
+        pre[s] = s;
         solveHelper(s);
     }
 
     // Helper methods go here
-    private void solveHelper(int v) {
+    private boolean solveHelper(int v) {
         marked[v] = true;
         announce();
 
         for (int w : maze.adj(v)) {
-            if (marked[w] && pre[w] != v) {
-                announce();
-                return;
+            if (marked[w] && w != pre[v]) {
+                pre[w] = v;
+                return true;
             }
+        }
+        for (int w : maze.adj(v)) {
             if (!marked[w]) {
                 pre[w] = v;
-                announce();
-                solveHelper(w);
+                if (solveHelper(w) == true) {
+                    edgeTo[w] = pre[w];
+                    announce();
+                    return true;
+                }
             }
-
         }
+        return false;
     }
 }
 
